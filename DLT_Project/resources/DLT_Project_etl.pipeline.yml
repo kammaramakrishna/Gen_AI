@@ -1,0 +1,19 @@
+# The main pipeline for DLT_Project
+
+resources:
+  pipelines:
+    DLT_Project_etl:
+      name: Bronze_to_Silver
+      configuration:
+        catalog_name: ${var.catalog}
+      libraries:
+        - glob:
+            include: ../src/DLT_Pipeline/Bronze_to_Silver/**
+      schema: bronze
+      continuous: false
+      development: false
+      photon: true
+      channel: CURRENT
+      catalog: ${var.catalog}
+      serverless: true
+      root_path: ../src/DLT_Pipeline/Bronze_to_Silver/transformations
