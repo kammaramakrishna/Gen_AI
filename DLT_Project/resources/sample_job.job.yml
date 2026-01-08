@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    DLT_Earthquake:
+      name: DLT_Earthquake
+      tasks:
+        - task_key: Ingestion_Bronze
+          notebook_task:
+            notebook_path: ../src/Notebooks/Bronze_Ingestion.ipynb
+            base_parameters:
+              catalog_name: ${var.catalog}
+            source: WORKSPACE
+        - task_key: Bronze_Silver_DLT
+          depends_on:
+            - task_key: Ingestion_Bronze
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.DLT_Project_etl.id}
+      queue:
+        enabled: true
+      parameters:
+        - name: catalog_name
+          default: ${var.catalog}
+      performance_target: PERFORMANCE_OPTIMIZED
